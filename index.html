@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String to Byte Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            margin: 5px 0;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            background: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            height: 100px;
+            overflow: auto;
+            font-family: monospace;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>String to Byte Converter</h1>
+        <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+        <button onclick="convertToBytes()">Convert to Bytes</button>
+        <button onclick="convertToString()">Convert to String</button>
+
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        // Function to convert text to bytes
+        function convertToBytes() {
+            const inputText = document.getElementById('inputText').value;
+            if (inputText.trim() === "") {
+                document.getElementById('output').innerHTML = "<p class='error'>Please enter a valid string!</p>";
+                return;
+            }
+            const byteArray = new TextEncoder().encode(inputText);
+            document.getElementById('output').innerHTML = Byte Array: [${Array.from(byteArray).join(', ')}];
+        }
+
+        // Function to convert byte array to text
+        function convertToString() {
+            const inputText = document.getElementById('inputText').value;
+            try {
+                const byteArray = inputText
+                    .replace(/[\[\]\s]/g, '')  // Remove brackets and whitespace
+                    .split(',')                // Split the input by commas
+                    .map(Number)               // Convert each item to a number
+                    .filter(num => !isNaN(num)); // Filter out any non-numeric values
+
+                // Check if the byte array is valid
+                if (byteArray.length === 0) {
+                    document.getElementById('output').innerHTML = "<p class='error'>Please enter a valid byte array!</p>";
+                    return;
+                }
+
+                // Decode the byte array to a string
+                const textString = new TextDecoder().decode(new Uint8Array(byteArray));
+                document.getElementById('output').innerHTML = String: ${textString};
+            } catch (error) {
+                document.getElementById('output').innerHTML = "<p class='error'>Invalid byte array format!</p>";
+            }
+        }
+    </script>
+
+</body>
+</html>
